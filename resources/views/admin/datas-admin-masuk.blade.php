@@ -55,7 +55,11 @@
                                     <td>{{ $item->perihal }}</td>
                                     <td>{{ $item->nomor_dokumen }}</td>
                                     <td>{{ $item->tgl_masuk }}</td>
-                                    <td>{{ $item->file }}</td>
+                                    <td>
+                                        <a href="{{ asset('assets/uploads/documents/masuk') . '/' . $item->file }}"
+                                            class="link-dark link-underline-opacity-100-hover"
+                                            target="_blank">{{ $item->file }}</a>
+                                    </td>
                                     <td>{{ $item->keterangan }}</td>
                                     @if (auth()->User()->role == 'Admin')
                                         <td>

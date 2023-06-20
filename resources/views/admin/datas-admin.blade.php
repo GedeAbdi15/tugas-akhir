@@ -50,7 +50,11 @@
                                     <td>{{ $nomor++ }}</td>
                                     <td>{{ $item->nomor_dokumen }}</td>
                                     <td>{{ $item->keterangan_khusus }}</td>
-                                    <td>{{ $item->file }}</td>
+                                    <td>
+                                        <a href="{{ asset('assets/uploads/documents/keluar') . '/' . $item->file }}"
+                                            class="link-dark link-underline-opacity-100-hover"
+                                            target="_blank">{{ $item->file }}</a>
+                                    </td>
                                     <td>{{ $item->kategori }}</td>
                                     @if (auth()->User()->role == 'Admin')
                                         <td>

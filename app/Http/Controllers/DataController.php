@@ -88,14 +88,14 @@ class DataController extends Controller
         if ($request->file('file')) {
             $file = $request->file('file');
             // dd($file->getClientOriginalExtension());
-            $file->move(public_path('assets/uploads/documents/keluar'), $request->nomor_dokumen . '.' . $file->getClientOriginalExtension());
+            $file->move(public_path('assets/uploads/documents/keluar'), $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension());
         }
 
         $data = [
             'nomor_dokumen' => $request->nomor_dokumen,
             'keterangan_khusus' => $request->keterangan_khusus,
             'kategori' => $request->kategori,
-            'file'  =>  $request->file('file') ? 'assets/uploads/documents/keluar/' . $request->nomor_dokumen . '.' . $file->getClientOriginalExtension() : null,
+            'file'  =>  $request->file('file') ? $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension() : null,
         ];
 
         if (DataModel::create($data)) {
@@ -143,14 +143,16 @@ class DataController extends Controller
         if ($request->file('file')) {
             $file = $request->file('file');
             // dd($file->getClientOriginalExtension());
-            $file->move(public_path('assets/uploads/documents/masuk'), $request->nomor_dokumen . '.' . $file->getClientOriginalExtension());
+            $file->move(public_path('assets/uploads/documents/masuk'),  $file->getClientOriginalExtension());
         }
+
+        $data = DataModel::find($id);
 
         if (DataModel::find($id)->update([
             'nomor_dokumen' => $request->nomor_dokumen,
             'keterangan_khusus' => $request->keterangan_khusus,
             'kategori' => $request->kategori,
-            'file'  =>  $request->file('file') ? 'assets/uploads/documents/keluar/' . $request->nomor_dokumen . '.' . $file->getClientOriginalExtension() : null,
+            'file'  =>  $request->file('file') ? $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension() : $data->file,
         ])) {
             return redirect('/datas');
         }

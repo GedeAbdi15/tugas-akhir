@@ -54,7 +54,7 @@ class DataMasukController extends Controller
         if ($request->file('file')) {
             $file = $request->file('file');
             // dd($file->getClientOriginalExtension());
-            $file->move(public_path('assets/uploads/documents/masuk'), $request->nomor_dokumen . '.' . $file->getClientOriginalExtension());
+            $file->move(public_path('assets/uploads/documents/masuk'), $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension());
         }
 
         $data = [
@@ -63,7 +63,7 @@ class DataMasukController extends Controller
             'nomor_dokumen' => $request->nomor_dokumen,
             'tgl_masuk' => $request->tgl_masuk,
             'keterangan' => $request->keterangan,
-            'file'  =>  $request->file('file') ? 'assets/uploads/documents/masuk/' . $request->nomor_dokumen . '.' . $file->getClientOriginalExtension() : null,
+            'file'  =>  $request->file('file') ? $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension() : null,
         ];
 
         if (data_masuk::create($data)) {
@@ -133,13 +133,15 @@ class DataMasukController extends Controller
             $file->move(public_path('assets/uploads/documents/masuk'), $request->nomor_dokumen . '.' . $file->getClientOriginalExtension());
         }
 
+        $data = data_masuk::find($id);
+
         if (data_masuk::find($id)->update([
             'asal_dokumen' => $request->asal_dokumen,
             'perihal' => $request->perihal,
             'nomor_dokumen' => $request->nomor_dokumen,
             'tgl_masuk' => $request->tgl_masuk,
             'keterangan' => $request->keterangan,
-            'file'  =>  $request->file('file') ? 'assets/uploads/documents/masuk/' . $request->nomor_dokumen . '.' . $file->getClientOriginalExtension() : null,
+            'file'  =>  $request->file('file') ? $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension() : $data->file,
         ])) {
             return redirect('/datas-masuk');
         }
